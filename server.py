@@ -2,7 +2,8 @@ from help import helper
 import seedir
 from flask import Flask, request, render_template, jsonify, send_from_directory
 from file_handel import *
-
+import func_timeout
+import sys
 app = Flask(__name__)
 
 
@@ -45,7 +46,8 @@ def add():
 def delete():
     try:
         print(eval(request.args['files']))
-        response = delete_file(request.args['dir'], eval(request.args['files']))
+        response = delete_file(
+            request.args['dir'], eval(request.args['files']))
         return seedir.seedir('./archive/%s' % request.args['dir'], printout=False, style='emoji')
     except Exception as e:
         return '%s' % str(e)
@@ -97,4 +99,12 @@ def restore():
         return '%s' % str(e)
 
 
-app.run(host='0.0.0.0', port=1080)
+@func_timeout.func_set_timeout(60*15)
+def run():
+    app.run(host='0.0.0.0', port=1080)
+
+
+try:
+    run()
+except:
+    os.system('python3.8 '+sys.argv[0])
