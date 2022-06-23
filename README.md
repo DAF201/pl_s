@@ -1,3 +1,9 @@
 # pl_s
 
-TBD
+TODO:
+
+improve add/del
+
+add update
+
+add mf/mdir
